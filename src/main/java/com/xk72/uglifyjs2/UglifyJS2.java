@@ -6,9 +6,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ImporterTopLevel;
+import org.mozilla.javascript.ScriptableObject;
 
 import com.xk72.uglifyjs2.util.IOUtils;
 
@@ -21,16 +23,21 @@ public class UglifyJS2 {
 
 	private static final String UGLIFYJS2_COMBINED_JS = "javascript/uglifyjs2.combined.js";
 
-	private ScriptEngine js;
+	private ScriptableObject scope;
 	
-	public UglifyJS2() throws ScriptException {
+	public UglifyJS2() throws ScriptException, IOException {
 		super();
-		js = getScriptEngine();
+		init();
 	}
 
 	public String compress(String code, boolean mangle) throws ScriptException {
-		js.put("code", code);
-		return (String) js.eval("compress(code, " + mangle + ")");
+		final Context js = Context.enter();
+		try {
+			scope.defineProperty("code", code, ScriptableObject.READONLY);
+			return (String) js.evaluateString(scope, "compress(code, " + mangle + ")", "", 1, null);
+		} finally {
+			Context.exit();
+		}
 	}
 	
 	public String compress(String code) throws ScriptException {
@@ -54,12 +61,19 @@ public class UglifyJS2 {
 		return compress(resource, false);
 	}
 	
-	private ScriptEngine getScriptEngine() throws ScriptException {
-		ScriptEngineManager sem = new ScriptEngineManager();
-		ScriptEngine js = sem.getEngineByName("JavaScript");
-		js.eval(new InputStreamReader(UglifyJS2.class.getResourceAsStream(UGLIFYJS2_COMBINED_JS)));
-		js.eval(new InputStreamReader(UglifyJS2.class.getResourceAsStream("javascript/compress.js")));
-		return js;
+	private void init() throws ScriptException, IOException {
+		Context js = Context.enter();
+		try {
+			js.setOptimizationLevel(9);
+			
+			ImporterTopLevel scope = new ImporterTopLevel(js);
+			js.evaluateReader(scope, new InputStreamReader(UglifyJS2.class.getResourceAsStream(UGLIFYJS2_COMBINED_JS)), UGLIFYJS2_COMBINED_JS, 1, null);
+			js.evaluateReader(scope, new InputStreamReader(UglifyJS2.class.getResourceAsStream("javascript/compress.js")), "compress.js", 1, null);
+			
+			this.scope = scope;
+		} finally {
+			Context.exit();
+		}
 	}
 	
 }

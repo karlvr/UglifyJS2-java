@@ -9,7 +9,7 @@ import org.junit.Test;
 public class PerformanceTest {
 
 	@Test
-	public void testPerformance() throws ScriptException {
+	public void testPerformance() throws ScriptException, IOException {
 		UglifyJS2 u = new UglifyJS2();
 		long startTime = System.currentTimeMillis();
 		for (int i = 0; i < 1000; i++) {
@@ -19,7 +19,7 @@ public class PerformanceTest {
 	}
 	
 	@Test
-	public void testMangePerformance() throws ScriptException {
+	public void testMangePerformance() throws ScriptException, IOException {
 		UglifyJS2 u = new UglifyJS2();
 		long startTime = System.currentTimeMillis();
 		for (int i = 0; i < 1000; i++) {

@@ -5,8 +5,15 @@
 	<artifactId>uglifyjs2-java</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>UglifyJS2 for Java</name>
-	
+
 	<dependencies>
+		<dependency>
+			<groupId>org.mozilla</groupId>
+			<artifactId>rhino</artifactId>
+			<version>1.7R4</version>
+			<scope>compile</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -14,7 +21,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>

@@ -1,5 +1,6 @@
 package com.xk72.uglifyjs2;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.Callable;
@@ -16,7 +17,7 @@ import org.junit.Test;
 public class ConcurrencyTest {
 
 	@Test
-	public void testConcurency() throws ScriptException, InterruptedException, ExecutionException {
+	public void testConcurency() throws ScriptException, InterruptedException, ExecutionException, IOException {
 		final UglifyJS2 u = new UglifyJS2();
 		
 		Callable<String> callable = new Callable<String>() {
