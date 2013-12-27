@@ -28,9 +28,30 @@ public class UglifyJS2 {
 		js = getScriptEngine();
 	}
 
-	public String compress(String code) throws ScriptException {
+	public String compress(String code, boolean mangle) throws ScriptException {
 		js.put("code", code);
-		return (String) js.eval("compress(code)");
+		return (String) js.eval("compress(code, " + mangle + ")");
+	}
+	
+	public String compress(String code) throws ScriptException {
+		return compress(code, false);
+	}
+
+	public String compress(Reader reader, boolean mangle) throws ScriptException, IOException {
+		return compress(IOUtils.read(reader), mangle);
+	}
+	
+	public String compress(Reader reader) throws ScriptException, IOException {
+		return compress(reader, false);
+	}
+
+	public String compress(URL resource, boolean mangle) throws IOException, ScriptException {
+		InputStream inputStream = resource.openStream();
+		return compress(new InputStreamReader(inputStream), mangle);
+	}
+	
+	public String compress(URL resource) throws IOException, ScriptException {
+		return compress(resource, false);
 	}
 	
 	private ScriptEngine getScriptEngine() throws ScriptException {
@@ -39,15 +60,6 @@ public class UglifyJS2 {
 		js.eval(new InputStreamReader(UglifyJS2.class.getResourceAsStream(UGLIFYJS2_COMBINED_JS)));
 		js.eval(new InputStreamReader(UglifyJS2.class.getResourceAsStream("javascript/compress.js")));
 		return js;
-	}
-
-	public String compress(URL resource) throws IOException, ScriptException {
-		InputStream inputStream = resource.openStream();
-		return compress(new InputStreamReader(inputStream));
-	}
-
-	private String compress(Reader reader) throws ScriptException, IOException {
-		return compress(IOUtils.read(reader));
 	}
 	
 }
