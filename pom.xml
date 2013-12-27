@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.xk72</groupId>
 	<artifactId>uglifyjs2-java</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>UglifyJS2 for Java</name>
 
 	<dependencies>
