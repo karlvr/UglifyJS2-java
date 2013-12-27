@@ -13,7 +13,7 @@ import javax.script.ScriptException;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ConcurrencyTests {
+public class ConcurrencyTest {
 
 	@Test
 	public void testConcurency() throws ScriptException, InterruptedException, ExecutionException {
@@ -37,13 +37,13 @@ public class ConcurrencyTests {
 			futures.add(executorService.submit(callable));
 		}
 		
-		System.out.println("Submitted all tasks " + (System.currentTimeMillis() - startTime));
+		System.out.println("Submitted all tasks in " + (System.currentTimeMillis() - startTime) + " ms");
 		
 		for (Future<String> future : futures) {
 			Assert.assertEquals("(function(){var karl=\"abc\";return karl})();", future.get());
 		}
 		
-		System.out.println("Completed all tasks " + (System.currentTimeMillis() - startTime));
+		System.out.println("Completed all tasks in " + (System.currentTimeMillis() - startTime) + " ms");
 	}
 	
 }

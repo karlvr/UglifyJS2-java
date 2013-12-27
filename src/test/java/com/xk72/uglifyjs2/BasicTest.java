@@ -5,7 +5,7 @@ import javax.script.ScriptException;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class BasicTests {
+public class BasicTest {
 
 	@Test
 	public void testBasicCompress() throws ScriptException {
